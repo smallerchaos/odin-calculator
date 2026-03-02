@@ -8,11 +8,13 @@ const backspaceButton = document.querySelector("#backspace");
 
 // ----- Universal Variables ----- //
 let calculationArray = [];
+let indexOfOperator;
 
 // ----- Functions ----- //
 
 equalsButton.addEventListener("click", () => {
     // Apply calculations by checking which operator is there and then applying the necessary calculation function
+    calculation(turnIntoNumbers(calculationArray, indexOfOperator));
 });
 
 clearButton.addEventListener("click", () => {
@@ -23,8 +25,8 @@ clearButton.addEventListener("click", () => {
 const numButton = document.querySelectorAll(".num-button");
 numButton.forEach((item) => {
     item.addEventListener("click", () => {
-        calculationArray.push(Number(item.textContent));
-        let indexOfOperator = calculationArray.findIndex((element) => typeof(element) === "string");
+        calculationArray.push(item.textContent);
+        indexOfOperator = calculationArray.findIndex((element) => Number.isNaN(+element) === true);
         console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
         console.log(calculationArray);
         console.log(item.textContent);
@@ -37,20 +39,28 @@ operatorButton.forEach((item) => {
     item.addEventListener("click", () => {
         // TODO: Add checks to see if there is already an operator
         if (item.textContent === "×") {
-            calculationArray.push("*");
+            if (indexOfOperator === -1) {
+                calculationArray.push("*");
+            }
             console.log("*");
             console.log(calculationArray);
         } else if (item.textContent === "÷") {
-            calculationArray.push("/");
+            if (indexOfOperator === -1) {
+                calculationArray.push("/");
+            }
             console.log("/");
             console.log(calculationArray);
         } else if (item.textContent === "+") {
-            calculationArray.push("+");
+            if (indexOfOperator === -1) {
+                calculationArray.push("+");
+            }
             console.log("plus!");
             console.log(calculationArray);
             console.log(item.textContent);
         } else if (item.textContent === "-") {
-            calculationArray.push("-");
+            if (indexOfOperator === -1) {
+                calculationArray.push("-");
+            }
             console.log("minus!");
             console.log(calculationArray);
             console.log(item.textContent);
@@ -58,11 +68,48 @@ operatorButton.forEach((item) => {
     });
 });
 
-const addition = function (num1, num2) {
-    // We could also use reduce
+const turnIntoNumbers = function(array, operatorIndex) {
+    let firstNum = Number(array.slice(0, operatorIndex).join(""));
+    console.log(firstNum);
+    let secondNum = Number(array.slice(operatorIndex + 1, array.length + 1).join(""));
+    console.log(secondNum);
+    let finalArray = [firstNum, array[operatorIndex], secondNum];
+    console.log(finalArray);
+    return finalArray;
 }
 
-let calculation = function () {}
+const addition = function (num1, num2) {
+    return num1 + num2;
+}
+
+const subtraction = function (num1, num2) {
+    return num1 - num2;
+}
+
+const division = function (num1, num2) {
+    return num1 / num2;
+}
+
+const multiplication = function (num1, num2) {
+    return num1 * num2;
+}
+
+let calculation = function (array) {
+    const num1 = array[0];
+    const num2 = array[2];
+    let result;
+    if (array.includes("+")) {
+        result = addition(num1, num2);
+    } else if (array.includes("-")) {
+        result = subtraction(num1, num2);
+    } else if (array.includes("*")) {
+        result = multiplication(num1, num2);
+    } else if (array.includes("/")) {
+        result = division(num1, num2);
+    }
+    result = (Math.round(result*10000))/10000
+    console.log(result);
+}
 
 // Number clicked
 // operator clicked -> can change operator
