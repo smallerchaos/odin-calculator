@@ -12,12 +12,15 @@ let indexOfOperator;
 
 // ----- Functions ----- //
 
+backspaceButton.addEventListener("click", () => {
+    console.log(`backspace!`);
+    calculationArray.pop();
+    console.log(calculationArray);
+});
+
 equalsButton.addEventListener("click", () => {
     // Apply calculations by checking which operator is there and then applying the necessary calculation function
     calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-
-    // let result = calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-    // resultElement.textContent = result;
     calculationArray = [];
     console.log(`equals!`);
     console.log(calculationArray);
