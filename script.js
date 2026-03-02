@@ -15,6 +15,12 @@ let indexOfOperator;
 equalsButton.addEventListener("click", () => {
     // Apply calculations by checking which operator is there and then applying the necessary calculation function
     calculation(turnIntoNumbers(calculationArray, indexOfOperator));
+
+    // let result = calculation(turnIntoNumbers(calculationArray, indexOfOperator));
+    // resultElement.textContent = result;
+    calculationArray = [];
+    console.log(`equals!`);
+    console.log(calculationArray);
 });
 
 clearButton.addEventListener("click", () => {
@@ -37,33 +43,26 @@ numButton.forEach((item) => {
 const operatorButton = document.querySelectorAll(".operator-button");
 operatorButton.forEach((item) => {
     item.addEventListener("click", () => {
-        // TODO: Add checks to see if there is already an operator
         if (item.textContent === "×") {
-            if (indexOfOperator === -1) {
-                calculationArray.push("*");
+            if (indexOfOperator !== -1) {
+                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
-            console.log("*");
-            console.log(calculationArray);
+            calculationArray.push("*");
         } else if (item.textContent === "÷") {
-            if (indexOfOperator === -1) {
-                calculationArray.push("/");
+            if (indexOfOperator !== -1) {
+                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
-            console.log("/");
-            console.log(calculationArray);
+            calculationArray.push("/");
         } else if (item.textContent === "+") {
-            if (indexOfOperator === -1) {
-                calculationArray.push("+");
+            if (indexOfOperator !== -1) {
+                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
-            console.log("plus!");
-            console.log(calculationArray);
-            console.log(item.textContent);
+            calculationArray.push("+");
         } else if (item.textContent === "-") {
-            if (indexOfOperator === -1) {
-                calculationArray.push("-");
+            if (indexOfOperator !== -1) {
+                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
-            console.log("minus!");
-            console.log(calculationArray);
-            console.log(item.textContent);
+            calculationArray.push("-");
         }
     });
 });
@@ -109,6 +108,10 @@ let calculation = function (array) {
     }
     result = (Math.round(result*10000))/10000
     console.log(result);
+
+    resultElement.textContent = result;
+    calculationArray = [];
+    calculationArray.push(result);
 }
 
 // Number clicked
