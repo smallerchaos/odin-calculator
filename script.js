@@ -32,7 +32,7 @@ const numButton = document.querySelectorAll(".num-button");
 numButton.forEach((item) => {
     item.addEventListener("click", () => {
         calculationArray.push(item.textContent);
-        indexOfOperator = calculationArray.findIndex((element) => Number.isNaN(+element) === true);
+        indexOfOperator = checkOperator();
         console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
         console.log(calculationArray);
         console.log(item.textContent);
@@ -43,27 +43,44 @@ numButton.forEach((item) => {
 const operatorButton = document.querySelectorAll(".operator-button");
 operatorButton.forEach((item) => {
     item.addEventListener("click", () => {
+        console.log(`calculationArray.length = ${calculationArray.length}`);
+        indexOfOperator = checkOperator();
+        console.log(`indexOfOperator = ${indexOfOperator}`)
         if (item.textContent === "×") {
-            if (indexOfOperator !== -1) {
+            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
+                console.log(`pop!`);
+                console.log(calculationArray);
+                calculationArray.pop();
+            } else if (indexOfOperator !== -1) {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("*");
         } else if (item.textContent === "÷") {
-            if (indexOfOperator !== -1) {
+            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
+                console.log(`pop!`);
+                console.log(calculationArray);
+                calculationArray.pop();
+            } else if (indexOfOperator !== -1) {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("/");
         } else if (item.textContent === "+") {
-            if (indexOfOperator !== -1) {
+            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
+                calculationArray.pop();
+            } else if (indexOfOperator !== -1) {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("+");
         } else if (item.textContent === "-") {
-            if (indexOfOperator !== -1) {
+            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
+                calculationArray.pop();
+            } else if (indexOfOperator !== -1) {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("-");
         }
+        console.log(`operator!`);
+        console.log(calculationArray);
     });
 });
 
@@ -93,7 +110,7 @@ const multiplication = function (num1, num2) {
     return num1 * num2;
 }
 
-let calculation = function (array) {
+const calculation = function (array) {
     const num1 = array[0];
     const num2 = array[2];
     let result;
@@ -112,6 +129,10 @@ let calculation = function (array) {
     resultElement.textContent = result;
     calculationArray = [];
     calculationArray.push(result);
+}
+
+const checkOperator = function () {
+    return calculationArray.findIndex((element) => Number.isNaN(+element) === true);
 }
 
 // Number clicked
