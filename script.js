@@ -9,26 +9,37 @@ const backspaceButton = document.querySelector("#backspace");
 // ----- Universal Variables ----- //
 let calculationArray = [];
 let indexOfOperator;
+let calculationResult = 0;
 
 // ----- Functions ----- //
 
 backspaceButton.addEventListener("click", () => {
-    console.log(`backspace!`);
-    calculationArray.pop();
-    console.log(calculationArray);
+    if (calculationResult > 0) {
+    // Don't let user backspace if a calculation has already happened 
+    } else {
+        console.log(`backspace!`);
+        calculationArray.pop();
+        console.log(calculationArray);
+        displayCalculationArray(calculationArray, indexOfOperator);
+    }
 });
 
 equalsButton.addEventListener("click", () => {
-    // Apply calculations by checking which operator is there and then applying the necessary calculation function
-    calculation(turnIntoNumbers(calculationArray, indexOfOperator));
+    if (calculationArray.length >= 1) {
+        calculation(turnIntoNumbers(calculationArray, indexOfOperator));
     calculationArray = [];
+    calculationResult = 0;
     console.log(`equals!`);
     console.log(calculationArray);
+    }
 });
 
 clearButton.addEventListener("click", () => {
     calculationArray = [];
+    calculationResult = 0;
     console.log("Clear Button!");
+    displayElement.textContent = '';
+    resultElement.textContent = " ";
 });
 
 const numButton = document.querySelectorAll(".num-button");
@@ -39,6 +50,7 @@ numButton.forEach((item) => {
         console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
         console.log(calculationArray);
         console.log(item.textContent);
+        displayCalculationArray(calculationArray, indexOfOperator);
         return item.textContent;
     });
 });
@@ -49,7 +61,9 @@ operatorButton.forEach((item) => {
         console.log(`calculationArray.length = ${calculationArray.length}`);
         indexOfOperator = checkOperator();
         console.log(`indexOfOperator = ${indexOfOperator}`)
-        if (item.textContent === "×") {
+        if (calculationArray.length === 0) {
+            return;
+        } else if (item.textContent === "×") {
             if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
                 console.log(`pop!`);
                 console.log(calculationArray);
@@ -58,6 +72,7 @@ operatorButton.forEach((item) => {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("*");
+            displayCalculationArray(calculationArray, indexOfOperator);
         } else if (item.textContent === "÷") {
             if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
                 console.log(`pop!`);
@@ -67,6 +82,7 @@ operatorButton.forEach((item) => {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("/");
+            displayCalculationArray(calculationArray, indexOfOperator);
         } else if (item.textContent === "+") {
             if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
                 calculationArray.pop();
@@ -74,6 +90,7 @@ operatorButton.forEach((item) => {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("+");
+            displayCalculationArray(calculationArray, indexOfOperator);
         } else if (item.textContent === "-") {
             if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
                 calculationArray.pop();
@@ -81,6 +98,7 @@ operatorButton.forEach((item) => {
                 calculation(turnIntoNumbers(calculationArray, indexOfOperator));
             }
             calculationArray.push("-");
+            displayCalculationArray(calculationArray, indexOfOperator);
         }
         console.log(`operator!`);
         console.log(calculationArray);
@@ -126,10 +144,12 @@ const calculation = function (array) {
     } else if (array.includes("/")) {
         result = division(num1, num2);
     }
-    result = (Math.round(result*10000))/10000
+    result = (Math.round(result*100000))/100000;
     console.log(result);
 
     resultElement.textContent = result;
+    calculationResult = result;
+    console.log(`calculationResult = ${calculationResult}`);
     calculationArray = [];
     calculationArray.push(result);
 }
@@ -138,10 +158,20 @@ const checkOperator = function () {
     return calculationArray.findIndex((element) => Number.isNaN(+element) === true);
 }
 
-// Number clicked
-// operator clicked -> can change operator
-// Number clicked
-// If equals, return result
-// If other operator, return result
-// Backspace removes the last item
-// Clear removes all items
+const displayCalculationArray = function (array, operatorIndex) {
+    if (array.length < 1) {
+        // If there's nothing to calculate, don't do anything
+    } else if (checkOperator(array) === -1) {
+        console.log(`no operators`);
+        displayElement.textContent = array.join("");
+    } else if (checkOperator(array) === array.length -1) {
+        console.log(`checkOperator(array) === array.length -1 = ${checkOperator(array) === array.length -1}`);
+        displayElement.textContent = `${array.slice(0, array.length - 1).join("")} ${array[array.length - 1]}`;
+    } else {
+        console.log(`else in displayCalculationArray`);
+        displayElement.textContent = turnIntoNumbers(array, operatorIndex).join(" ");
+    }
+}
+
+// TODO
+// Do not allow users to divide by 0
