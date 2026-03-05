@@ -17,9 +17,9 @@ backspaceButton.addEventListener("click", () => {
     if (calculationResult > 0) {
     // Don't let user backspace if a calculation has already happened 
     } else {
-        console.log(`backspace!`);
+            console.log(`backspace!`);
         calculationArray.pop();
-        console.log(calculationArray);
+            console.log(calculationArray);
         displayCalculationArray(calculationArray, indexOfOperator);
     }
 });
@@ -28,16 +28,15 @@ equalsButton.addEventListener("click", () => {
     if (calculationArray.length >= 1) {
         calculation(turnIntoNumbers(calculationArray, indexOfOperator));
     calculationArray = [];
-    calculationResult = 0;
-    console.log(`equals!`);
-    console.log(calculationArray);
+        console.log(`equals!`);
+        console.log(calculationArray);
     }
 });
 
 clearButton.addEventListener("click", () => {
     calculationArray = [];
     calculationResult = 0;
-    console.log("Clear Button!");
+        console.log("Clear Button!");
     displayElement.textContent = '';
     resultElement.textContent = " ";
 });
@@ -47,9 +46,9 @@ numButton.forEach((item) => {
     item.addEventListener("click", () => {
         calculationArray.push(item.textContent);
         indexOfOperator = checkOperator();
-        console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
-        console.log(calculationArray);
-        console.log(item.textContent);
+            console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
+            console.log(calculationArray);
+            console.log(item.textContent);
         displayCalculationArray(calculationArray, indexOfOperator);
         return item.textContent;
     });
@@ -58,60 +57,44 @@ numButton.forEach((item) => {
 const operatorButton = document.querySelectorAll(".operator-button");
 operatorButton.forEach((item) => {
     item.addEventListener("click", () => {
-        console.log(`calculationArray.length = ${calculationArray.length}`);
+            console.log(`calculationArray.length = ${calculationArray.length}`);
         indexOfOperator = checkOperator();
-        console.log(`indexOfOperator = ${indexOfOperator}`)
-        if (calculationArray.length === 0) {
-            return;
-        } else if (item.textContent === "×") {
-            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
-                console.log(`pop!`);
-                console.log(calculationArray);
-                calculationArray.pop();
-            } else if (indexOfOperator !== -1) {
-                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-            }
-            calculationArray.push("*");
-            displayCalculationArray(calculationArray, indexOfOperator);
-        } else if (item.textContent === "÷") {
-            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
-                console.log(`pop!`);
-                console.log(calculationArray);
-                calculationArray.pop();
-            } else if (indexOfOperator !== -1) {
-                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-            }
-            calculationArray.push("/");
-            displayCalculationArray(calculationArray, indexOfOperator);
-        } else if (item.textContent === "+") {
-            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
-                calculationArray.pop();
-            } else if (indexOfOperator !== -1) {
-                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-            }
-            calculationArray.push("+");
-            displayCalculationArray(calculationArray, indexOfOperator);
-        } else if (item.textContent === "-") {
-            if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
-                calculationArray.pop();
-            } else if (indexOfOperator !== -1) {
-                calculation(turnIntoNumbers(calculationArray, indexOfOperator));
-            }
-            calculationArray.push("-");
-            displayCalculationArray(calculationArray, indexOfOperator);
+            console.log(`indexOfOperator = ${indexOfOperator}`);
+
+        if (calculationResult === 0) {
+            // If the result hasn't been calculated yet
+            resultElement.textContent = "";
+            displayElement.textContent = "";
         }
-        console.log(`operator!`);
-        console.log(calculationArray);
+
+        if (calculationArray.length === 0) {
+            // If no numbers have been entered, don't do anything
+            return;
+        } else if (indexOfOperator !== -1 && indexOfOperator === calculationArray.length -1) {
+            // If an operator was the last thing selected, remove the operator and replace it with the new operator
+                console.log(`pop!`);
+                console.log(calculationArray);
+            calculationArray.pop();
+        } else if (indexOfOperator !== -1) {
+            // If an operator has already been selected, but numbers have been selected afterwards, calculate the result
+            calculation(turnIntoNumbers(calculationArray, indexOfOperator));
+        }
+
+        calculationArray.push(item.textContent);
+        displayCalculationArray(calculationArray, indexOfOperator);
+
+            console.log(`operator!`);
+            console.log(calculationArray);
     });
 });
 
 const turnIntoNumbers = function(array, operatorIndex) {
     let firstNum = Number(array.slice(0, operatorIndex).join(""));
-    console.log(firstNum);
+        console.log(firstNum);
     let secondNum = Number(array.slice(operatorIndex + 1, array.length + 1).join(""));
-    console.log(secondNum);
+        console.log(secondNum);
     let finalArray = [firstNum, array[operatorIndex], secondNum];
-    console.log(finalArray);
+        console.log(finalArray);
     return finalArray;
 }
 
@@ -139,17 +122,18 @@ const calculation = function (array) {
         result = addition(num1, num2);
     } else if (array.includes("-")) {
         result = subtraction(num1, num2);
-    } else if (array.includes("*")) {
+
+    } else if (array.includes("×")) {
         result = multiplication(num1, num2);
-    } else if (array.includes("/")) {
+    } else if (array.includes("÷")) {
         result = division(num1, num2);
     }
     result = (Math.round(result*100000))/100000;
-    console.log(result);
+        console.log(result);
 
     resultElement.textContent = result;
     calculationResult = result;
-    console.log(`calculationResult = ${calculationResult}`);
+        console.log(`calculationResult = ${calculationResult}`);
     calculationArray = [];
     calculationArray.push(result);
 }
@@ -162,16 +146,17 @@ const displayCalculationArray = function (array, operatorIndex) {
     if (array.length < 1) {
         // If there's nothing to calculate, don't do anything
     } else if (checkOperator(array) === -1) {
-        console.log(`no operators`);
+            console.log(`no operators`);
         displayElement.textContent = array.join("");
     } else if (checkOperator(array) === array.length -1) {
-        console.log(`checkOperator(array) === array.length -1 = ${checkOperator(array) === array.length -1}`);
+            console.log(`checkOperator(array) === array.length -1 = ${checkOperator(array) === array.length -1}`);
         displayElement.textContent = `${array.slice(0, array.length - 1).join("")} ${array[array.length - 1]}`;
     } else {
-        console.log(`else in displayCalculationArray`);
+            console.log(`else in displayCalculationArray`);
         displayElement.textContent = turnIntoNumbers(array, operatorIndex).join(" ");
     }
 }
 
 // TODO
 // Do not allow users to divide by 0
+// Allow users to enter decimal numbers
