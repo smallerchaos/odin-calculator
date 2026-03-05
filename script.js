@@ -1,6 +1,7 @@
 // ----- HTML Elements ----- //
 const displayElement = document.querySelector("#display");
 const resultElement = document.querySelector("#result");
+const errorMessageElement = document.querySelector("#error-message");
 
 const clearButton = document.querySelector("#clear");
 const equalsButton = document.querySelector("#equals");
@@ -37,20 +38,30 @@ clearButton.addEventListener("click", () => {
     calculationArray = [];
     calculationResult = 0;
         console.log("Clear Button!");
-    displayElement.textContent = '';
-    resultElement.textContent = " ";
+    displayElement.textContent = "";
+    resultElement.textContent = "";
+    errorMessageElement.textContent = "";
 });
 
 const numButton = document.querySelectorAll(".num-button");
 numButton.forEach((item) => {
     item.addEventListener("click", () => {
-        calculationArray.push(item.textContent);
         indexOfOperator = checkOperator();
-            console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
-            console.log(calculationArray);
-            console.log(item.textContent);
-        displayCalculationArray(calculationArray, indexOfOperator);
-        return item.textContent;
+        // If the operator is / and the button you pressed is 0, show error message
+        // Otherwise, push the number to calculationArray
+        if (calculationArray.includes("÷") && 
+        indexOfOperator === calculationArray.length -1  && 
+        +item.textContent === 0) {
+            errorMessageElement.textContent = "Stop that D: It's infinity and will break the calculator."
+            console.log("error! don't divide by 0");
+        } else {
+            errorMessageElement.textContent = "";
+            calculationArray.push(item.textContent);
+                console.log(`indexOfOperator = ${indexOfOperator} and ${calculationArray[indexOfOperator]}`);
+                console.log(calculationArray);
+                console.log(item.textContent);
+            displayCalculationArray(calculationArray, indexOfOperator);
+        }
     });
 });
 
@@ -59,6 +70,7 @@ operatorButton.forEach((item) => {
     item.addEventListener("click", () => {
             console.log(`calculationArray.length = ${calculationArray.length}`);
         indexOfOperator = checkOperator();
+        errorMessageElement.textContent = "";
             console.log(`indexOfOperator = ${indexOfOperator}`);
 
         if (calculationResult === 0) {
@@ -158,5 +170,4 @@ const displayCalculationArray = function (array, operatorIndex) {
 }
 
 // TODO
-// Do not allow users to divide by 0
 // Allow users to enter decimal numbers
