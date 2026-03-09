@@ -82,7 +82,9 @@ const numButton = document.querySelectorAll(".num-button");
 numButton.forEach((item) => {
     item.addEventListener("click", () => {
         indexOfOperator = checkOperator();
-        console.log(`Number(calculationArray.slice(0, indexOfOperator).includes(".")).isInteger() === false = ${Number.isInteger(Number(calculationArray.slice(0, indexOfOperator))) === false}`);
+        console.log(`calculationArray.length = ${calculationArray.length}`);
+        console.log(`button pressed is ${item.textContent} which is type of ${typeof(item.textContent)}`);
+        console.log(`indexOfOperator = ${indexOfOperator}`);
         // If the operator is / and the button you pressed is 0, show error message
         // Otherwise, push the number to calculationArray
         if (calculationArray.includes("÷") && 
@@ -96,6 +98,11 @@ numButton.forEach((item) => {
             // 12 + 3.1.4.1.
             // 12.2 + 92.1
             // Number.isInteger === false
+        } else if (calculationArray.length === 0 && item.textContent === "0" ||
+        (calculationArray.length !== 0 && indexOfOperator === calculationArray.length - 1 && item.textContent === "0")
+        ) {
+
+            // Don't let user select "0" as the first number when there is nothing else OR directly after an operator
         } else {
             errorMessageElement.textContent = "";
             calculationArray.push(String(item.textContent));
@@ -238,5 +245,3 @@ const displayCalculationArray = function (array, operatorIndex) {
         displayElement.textContent = `${array.slice(0, operatorIndex).join("")} ${array[operatorIndex]} ${array.slice(operatorIndex + 1, array.length).join("")}`;
     }
 }
-// TODO
-// Allow users to enter decimal numbers
