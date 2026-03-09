@@ -12,27 +12,40 @@
     <p id="display"></p>
     <p id="result"></p>
     <p id="error-message"></p>
-    <div id="operator-button-container">
-        <button id="clear">clear</button>
-        <button id="plus" class="operator-button">+</button>
-        <button id="minus" class="operator-button">-</button>
-        <button id="multiply" class="operator-button">&#215;</button>
-        <button id="divide" class="operator-button">&#247;</button>
-        <button id="equals" class="">=</button>
-        <button id="backspace">backspace</button>
+    <div id="buttons-container">
+        <div id="operator-button-container">
+            <button id="plus" class="operator-button">+</button>
+            <button id="minus" class="operator-button">-</button>
+            <button id="multiply" class="operator-button">&#215;</button>
+            <button id="divide" class="operator-button">&#247;</button>
+        </div>
+        <div id="number-button-container">
+            <div class="num-row">
+                <button id="num-7" class="num-button">7</button>
+                <button id="num-8" class="num-button">8</button>
+                <button id="num-9" class="num-button">9</button>
+            </div>
+            <div class="num-row">
+                <button id="num-4" class="num-button">4</button>
+                <button id="num-5" class="num-button">5</button>
+                <button id="num-6" class="num-button">6</button>
+            </div>
+            <div class="num-row">
+                <button id="num-1" class="num-button">1</button>
+                <button id="num-2" class="num-button">2</button>
+                <button id="num-3" class="num-button">3</button>
+            </div>
+            <div class="num-row">
+                <button>
+                <button id="num-0" class="num-button">0</button>
+                <button id="decimal" class="">.</button>
+            </div>
+        </div>
     </div>
-    <div id="number-button-container">
-        <button id="num-0" class="num-button">0</button>
-        <button id="num-1" class="num-button">1</button>
-        <button id="num-2" class="num-button">2</button>
-        <button id="num-3" class="num-button">3</button>
-        <button id="num-4" class="num-button">4</button>
-        <button id="num-5" class="num-button">5</button>
-        <button id="num-6" class="num-button">6</button>
-        <button id="num-7" class="num-button">7</button>
-        <button id="num-8" class="num-button">8</button>
-        <button id="num-9" class="num-button">9</button>
-        <button id="decimal" class="">.</button>
+    <div id="helper-buttons">
+        <button id="clear">clear</button>
+        <button id="backspace">delete</button>
+        <button id="equals" class="">=</button>
     </div>
 </body>
 </html>
